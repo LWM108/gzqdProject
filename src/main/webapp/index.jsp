@@ -3,7 +3,7 @@
 <%
 	pageContext.setAttribute("APP_PATH", request.getContextPath());
 %>
-<!-- Pear Admin -->
+<!-- Pear Admin  http://jmysy.gitee.io/pear-admin-layui/Pear%20Admin%20v%202.0/#-->
 <!DOCTYPE html>
 <html>
 	<head>
