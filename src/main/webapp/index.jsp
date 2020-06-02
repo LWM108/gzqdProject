@@ -4,6 +4,7 @@
 	pageContext.setAttribute("APP_PATH", request.getContextPath());
 %>
 <!-- Pear Admin  http://jmysy.gitee.io/pear-admin-layui/Pear%20Admin%20v%202.0/#-->
+<!-- 增加gitee  跟 github内容更新 -->
 <!DOCTYPE html>
 <html>
 	<head>
