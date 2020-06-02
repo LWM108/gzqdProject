@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +36,22 @@ public class EmployeeController {
 	
 	@Autowired 
 	EmployeeService employeeService;
+	
+	
+	/**
+	  * 内置员工类的正则校验@Valid ，验证结果返回BindingResult result
+	  * 查询员工信息（分页查询）
+	  * @return
+	  */
+	 @RequestMapping( value = "getEmployee/{id}",method = RequestMethod.GET)
+	 @ResponseBody
+	 public Msg getEmployee( @PathVariable("id")Integer id ) {
+		   
+		 Employee employee = employeeService.getEmployee(id);
+	 
+		 return Msg.success().add("emp", employee); 
+	}
+	
 	
 	 /**
 	  * 检查员工姓名是否已经存在

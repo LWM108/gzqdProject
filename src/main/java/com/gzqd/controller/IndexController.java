@@ -31,7 +31,7 @@ import com.gzqd.service.EmployeeService;
  */
 //@RequestMapping("")
 @Controller  
-public class IdnexController {
+public class IndexController {
 	
 	@Autowired 
 	EmployeeService employeeService;

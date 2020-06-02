@@ -43,13 +43,18 @@
 				var email =$("<td></td>").append(item.email); 
 				var depName =$("<td></td>").append(item.department.depName); 
 				var editButton = $("<td></td>").append( $("<buttopn></button>"))
-											   .addClass("btn btn-primary  btn-sm")
+											   .addClass("btn btn-primary  btn-sm edit_btn")
 											   .append( $("<span></span>")).addClass("glyphicon glyphicon-pencil")
 											   .append("编辑");
+					//为编辑按钮添加一个自定义属性，来表示当前员工的id
+					editButton.attr("edit-id",item.empId);
+				
 				var deleteButton = $("<td></td>").append( $("<buttopn></button>"))
-				   .addClass("btn btn-danger  btn-sm")
+				   .addClass("btn btn-danger  btn-sm delete_btn")
 				   .append( $("<span></span>")).addClass("glyphicon glyphicon-trash")
 				   .append("删除");
+					//为编辑按钮添加一个自定义属性，来表示当前员工的id
+					deleteButton.attr("dele-id",item.empId);
 				
 				var button = $("<td></td>").append(editButton).append(" ").append(deleteButton);
 				
@@ -168,7 +173,7 @@
 // 			$("#empAndModal form")[0].reset();
 			
 		 	//发送ajax请求，显示部门信息在下拉列表上
-			getDepts();
+			getDepts("#empAndModal select");
  			//弹出模态框
 			$("#empAndModal").modal({
 				backdrop:"static"
@@ -177,9 +182,9 @@
 		});
 		
 		//查出所有部门信息并显示在下拉列表上
-		function getDepts(){
+		function getDepts(ele){
 			//每次加载前，清空数据
-			$("#empAndModal select").empty();
+			$(ele).empty();
 			
 			$.ajax({
 				url:$("#PageContext").val()+"/department/list",
@@ -192,7 +197,7 @@
 					$.each(result.data.departmentsList ,function(index,item){
 						
 						var optionDepent = $("<option></option>").append(item.depName).attr("value",item.depId)
-						optionDepent.appendTo($("#empAndModal select"));
+						optionDepent.appendTo(ele);
 					});
  
 				}
@@ -319,4 +324,47 @@
 			}); 
 			
 		});
+		
+		
+		//1、绑定编辑每个按钮
+		$(document).on("click",".edit_btn",function(){
+			 
+			//0、查出员工信息
+			getEmp($(this).attr("edit-id") );
+			
+			//1、查出部门信息，并显示在部门列表上
+			
+			//弹出前，清空表单数据
+			 reset_form("#empUpdateModal form")
+//			$("#empAndModal form")[0].reset();
+			
+		 	//发送ajax请求，显示部门信息在下拉列表上
+			getDepts($("#empUpdateModal select"));
+			//弹出模态框
+			$("#empUpdateModal").modal({
+				backdrop:"static"
+			}); 
+		});
+		
+		
+		//查询员工信息
+		function getEmp(id){
+			
+			$.ajax({
+				url:$("#PageContext").val()+"/employee/getEmployee/"+id,
+				type:"GET",
+				success:function(result){
+ 					//打印信息
+					console.log(result);
+					var empData = result.data.emp;
+					$("#empName_update_static").text(empData.empName);
+					$("#email_update_input").val(empData.email);
+					$("#empUpdateModal input[name=gender]").val([empData.gender]);
+					//这个目前没有值 部门信息
+					$("#empUpdateModal select").val([empData.dId]);
+ 
+				 }
+			});
+			
+		}
 	

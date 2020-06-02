@@ -55,5 +55,16 @@ public class EmployeeService {
 		return count == 0;
 	}
 	
+	/**
+	 * 查询员工信息
+	 * @param id
+	 * @return
+	 */
+	public Employee getEmployee(Integer id) {
+		// TODO Auto-generated method stub
+		Employee employee = employeeMapper.selectByPrimaryKey(id);
+		return employee;
+	}
+	
 	
 }
