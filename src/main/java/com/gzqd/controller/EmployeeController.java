@@ -1,5 +1,6 @@
 package com.gzqd.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,12 +38,59 @@ public class EmployeeController {
 	@Autowired 
 	EmployeeService employeeService;
 	
-	
-	/**
-	  * 内置员工类的正则校验@Valid ，验证结果返回BindingResult result
-	  * 查询员工信息（分页查询）
+	 /** 
+	  * 单个批量二合一，删除
+	  * 单个删除：1
+	  * 批量删除1-2-3 
+	  * 根据id，删除员工信息
+	  * @param id 员工id
 	  * @return
-	  */
+	  */ 
+	 @RequestMapping( value = "deleteEmpById/{id}",method = RequestMethod.DELETE)
+	 @ResponseBody
+	 public Msg deleteEmpById( @PathVariable("id") String ids ) {
+		 
+		  System.out.println("deleteEmpById："+ids);
+		//批量删除 
+		if (ids.contains("-")) {
+			
+			List<Integer> idList = new ArrayList<Integer>();
+			String[] str_ids = ids.split("-");
+			for (String id : str_ids) { 
+				idList.add(Integer.parseInt(id));
+			}
+			  
+			employeeService.deleteEmpBatch(idList);
+			
+		}else {
+			//单个删除
+			int id = Integer.parseInt(ids);
+			employeeService.deleteEmpById(id); 
+		}
+		 
+		 return Msg.success(); 
+	}
+	
+	/** 
+	  * 根据id，更新员工信息
+	  * @param id 员工id
+	  * @return
+	  */ 
+	 @RequestMapping( value = "updateEmployee/{empId}",method = RequestMethod.PUT)
+	 @ResponseBody
+	 public Msg updateEmployee( Employee employee ) {
+		   
+		 System.out.println("employee:"+employee.toString());
+		 employeeService.updateEmployee(employee);
+		 
+		 return Msg.success(); 
+	}
+	
+	/** 
+	  * 根据id，查询员工信息
+	  * @param id 员工id
+	  * @return
+	  */ 
 	 @RequestMapping( value = "getEmployee/{id}",method = RequestMethod.GET)
 	 @ResponseBody
 	 public Msg getEmployee( @PathVariable("id")Integer id ) {
@@ -61,9 +109,13 @@ public class EmployeeController {
 	 @ResponseBody
 	 public Msg checkEmpName(@RequestParam("empName")String empName ) {
 		
+		 System.out.println(empName);
+		 
 		 //先判断用户名称是否符合正则表达式
 		String regx = "(^[a-z0-9_-]{3,16}$)|(^[\\u2E80-\\u9FFF]{2,5})";
-		if (empName.matches(regx)) {
+		
+		System.out.println(empName.matches(regx));
+		if ( !empName.matches(regx)) {
 			return Msg.fail().add("va_msg", "用户名可必须为中文2-5位，或者3-16英文和数字组合。"); 
 		}
 		 
@@ -83,7 +135,7 @@ public class EmployeeController {
 	 @RequestMapping( value = "saveEmployee",method = RequestMethod.POST)
 	 @ResponseBody
 	 public Msg saveEmployee( @Valid Employee employee ,BindingResult result) {
-		  
+		  System.out.println("邮箱校验："+result.hasErrors());
 		 if (result.hasErrors()) {
 			 //校验失败的话，返回错误的信息
 			 HashMap<String, Object> map = new HashMap<String,Object>();
@@ -128,22 +180,22 @@ public class EmployeeController {
 	  * @return
 	  */
 //	 @RequestMapping("list")
-	 public String list(@RequestParam(value = "pn",defaultValue = "1")Integer pn , Model model) {
-		 
-		System.out.println("进入到list界面。");
-		//这不是一个分页查询
-		//引入pageHelper分页插件
-		PageHelper.startPage(pn, 10);//起始页码，每页显示多少条数据 
-		//数据库查询出的原始数据
-		List<Employee> employeesList = employeeService.getAll();
-		
-		//用PageInfo对结果进行包装,以及连续显示的 页数(5)
-		PageInfo page = new PageInfo(employeesList,5);
-		 
-		model.addAttribute("pageInfo", page);
-		
-		 return "list";
-	}
+//	 public String list(@RequestParam(value = "pn",defaultValue = "1")Integer pn , Model model) {
+//		 
+//		System.out.println("进入到list界面。");
+//		//这不是一个分页查询
+//		//引入pageHelper分页插件
+//		PageHelper.startPage(pn, 10);//起始页码，每页显示多少条数据 
+//		//数据库查询出的原始数据
+//		List<Employee> employeesList = employeeService.getAll();
+//		
+//		//用PageInfo对结果进行包装,以及连续显示的 页数(5)
+//		PageInfo page = new PageInfo(employeesList,5);
+//		 
+//		model.addAttribute("pageInfo", page);
+//		
+//		 return "list";
+//	}
  
 	 
 }

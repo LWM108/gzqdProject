@@ -61,7 +61,7 @@ public class MapperTest {
 //		}
 //		3、1 数据库sqlsession 进行批量操作
 		EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
-		for (int i = 0; i < 1000; i++) {
+		for (int i = 0; i < 30; i++) {
 			
 			String uuid = UUID.randomUUID().toString().substring(0, 5) + i;
 			mapper.insertSelective(new Employee(null, uuid,"M", uuid+"@qq.com", 1));

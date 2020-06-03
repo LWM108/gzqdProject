@@ -13,7 +13,7 @@ public class Msg {
 	//code=100 成功、200失败
 	private int code;
 	//返回信息
-	private String mes;
+	private String msg;
 	//其他参数
 	private Map<String, Object> data = new HashMap<String, Object>();
 	
@@ -21,7 +21,7 @@ public class Msg {
 		
 		Msg msg = new Msg();
 		msg.setCode(100);
-		msg.setMes("处理成功。");
+		msg.setMsg("处理成功。");
 		return msg;
 	}
 	
@@ -29,7 +29,7 @@ public class Msg {
 		
 		Msg msg = new Msg();
 		msg.setCode(200);
-		msg.setMes("处理失败！");
+		msg.setMsg("处理失败！");
 		return msg;
 	}
 	
@@ -45,12 +45,14 @@ public class Msg {
 	}
 	public void setCode(int code) {
 		this.code = code;
+	} 
+
+	public String getMsg() {
+		return msg;
 	}
-	public String getMes() {
-		return mes;
-	}
-	public void setMes(String mes) {
-		this.mes = mes;
+
+	public void setMsg(String msg) {
+		this.msg = msg;
 	}
 
 	public Map<String, Object> getData() {
@@ -60,7 +62,6 @@ public class Msg {
 	public void setData(Map<String, Object> data) {
 		this.data = data;
 	}
- 
-	
+  
 	
 }
