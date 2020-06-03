@@ -82,7 +82,7 @@
 					muiltTab: true , // 是 否 开 启 多 标 签 页 true 开启 false 关闭
 					control: false, // 是 否 开 启 多 系 统 菜 单 true 开启 false 关闭
 					theme: "dark-theme", // 默 认 主 题 样 式 dark-theme 默认主题 light-theme 亮主题
-					index: 'index', // 默 认 加 载 主 页   '${ APP_PATH}/console/console1.jsp'
+					index: 'index', // 默 认 加 载 主 页      '${ APP_PATH}/console/console1.jsp'
 					data: '${ APP_PATH}/static/admin/data/menu.json', // 菜 单 数 据 加 载 地 址
 				};
 				
